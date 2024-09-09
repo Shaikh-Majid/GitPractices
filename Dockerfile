@@ -7,8 +7,8 @@ FROM ubuntu as os
 WORKDIR /var/www/html
 
 
-FROM --from=os
-COPY index.html ./
+FROM scrach
+COPY --from=os index.html ./
 EXPOSE 80
 
 CMD ["nginx","-g","daemon off;"]
