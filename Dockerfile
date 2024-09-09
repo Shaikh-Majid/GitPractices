@@ -7,7 +7,7 @@ FROM ubuntu as os
 WORKDIR /var/www/html
 
 
-FROM scrach
+FROM scratch
 COPY --from=os index.html ./
 EXPOSE 80
 
