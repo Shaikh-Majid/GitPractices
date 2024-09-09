@@ -1,11 +1,8 @@
-FROM ubuntu as os
+FROM ubuntu as build
 LABEL description="My nginx image"
-RUN apt-get update -y
-RUN apt-get install nginx -y
-
-FROM scratch
+RUN apt-get update -y && apt-get install nginx -y
 WORKDIR /var/www/html
-COPY --from=os index.html ./
+COPY index.html ./
 EXPOSE 80
 
 CMD ["nginx","-g","daemon off;"]
