@@ -17,7 +17,7 @@ pipeline {
         }
         stage('docker image'){
             steps {
-                sh 'docker build -t cicdrepo/mavenwebapp .'
+                sh 'docker build -t cicdrepo/webapp .'
             }
         }
         stage('k8s deploy'){
