@@ -48,7 +48,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>App</mainClass>
+                            <mainClass>com.package.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
