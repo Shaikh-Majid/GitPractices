@@ -7,7 +7,8 @@ pipeline {
     stages {
         stage('clone') {
             steps {
-              git 'https://github.com/Shaikh-Majid/GitPractices.git'
+              git branch: 'main',
+                url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
         stage('build'){
