@@ -1,11 +1,14 @@
-FROM openjdk:17-alpine
-        
-EXPOSE 8080
- 
-ENV APP_HOME /usr/src/app
+# Use an official Java runtime as the base image
+FROM openjdk:17-jdk-slim
 
-COPY target/*.jar $APP_HOME/app.jar
+# Set working directory inside the container
+WORKDIR /app
 
-WORKDIR $APP_HOME
+# Copy the built JAR file into the container
+COPY target/GitPractices-1.0-SNAPSHOT.jar myapp.jar
 
-CMD ["java", "-jar", "app.jar"]
+# Expose port (optional, but useful for documentation)
+EXPOSE 80
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "myapp.jar"]
