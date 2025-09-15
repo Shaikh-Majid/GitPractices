@@ -28,6 +28,10 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker') {
                         def app = docker.build("shaikh888/devopsrepo:${BUILD_NUMBER}")
                         app.push()
+                    }
+                }
+            }
+       }
             
         stage('k8s deploy'){
             steps{
