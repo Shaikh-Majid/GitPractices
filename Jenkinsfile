@@ -1,31 +1,28 @@
 pipeline {
     agent any
     
-    tools {
-        maven 'maven3.6'
-        jdk 'jdk17'
+    tools{
+        maven 'Maven-3.9.9'
     }
-
     stages {
-        
-        stage('Compile') {
+        stage('clone') {
             steps {
-             sh 'mvn compile'
+              git 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
-        stage('test') {
-            steps {
-                sh 'mvn test'
+        stage('build'){
+            steps{
+                 sh 'mvn clean package'
             }
         }
-        stage('Package') {
+        stage('docker image'){
             steps {
-               sh 'mvn package'
+                sh 'docker build -t cicdrepo/mavenwebapp .'
             }
         }
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
+        stage('k8s deploy'){
+            steps{
+               sh 'kubectl apply -f k8s-deploy.yml'
             }
         }
     }
