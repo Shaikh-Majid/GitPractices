@@ -1,4 +1,4 @@
-package com.package;
+package com.majid;
 
 public class App {
     public static void main(String[] args) {
