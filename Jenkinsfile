@@ -17,6 +17,7 @@ pipeline {
                 url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
+    }
         stage('build'){
             steps{
                  sh 'mvn clean package'
@@ -32,11 +33,4 @@ pipeline {
                 }
             }
        }
-            
-        stage('k8s deploy'){
-            steps{
-               sh 'kubectl apply -f k8s-deploy.yml'
-            }
-        }
-    }
 }
