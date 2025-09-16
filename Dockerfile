@@ -11,4 +11,4 @@ COPY target/GitPractices-1.0-SNAPSHOT.jar ./myapp.jar
 EXPOSE 80
 
 # Command to run the JAR
-CMD ["java", "-jar", "myapp.jar"]
+ENTRYPOINT ["java", "-jar", "myapp.jar"]
