@@ -28,6 +28,7 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker') {
                         def app = docker.build("shaikh888/devopsrepo:${BUILD_NUMBER}")
                         app.push()
+                        sh 'docker run -dt --name my-app shaikh888/devopsrepo:${BUILD_NUMBER} -p 9000:80'
                     }
                 }
             }
