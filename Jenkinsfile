@@ -17,7 +17,6 @@ pipeline {
                 url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
-    }
         stage('build'){
             steps{
                  sh 'mvn clean package'
@@ -33,4 +32,7 @@ pipeline {
                 }
             }
        }
+
+    }
 }
+    
