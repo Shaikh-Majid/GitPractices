@@ -13,8 +13,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-              git branch: 'release',
-                url: 'https://github.com/Shaikh-Majid/GitPractices.git'
+              git url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
         stage('Maven Dependencies'){
