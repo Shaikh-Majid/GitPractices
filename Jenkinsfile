@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-              git branch: 'main',
+              git branch: 'release',
                 url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
