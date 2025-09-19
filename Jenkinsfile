@@ -11,13 +11,13 @@ pipeline {
         maven 'maven3'
     }
     stages {
-        stage('clone') {
+        stage('Git Checkout') {
             steps {
               git branch: 'main',
                 url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
-        stage('build'){
+        stage('Maven'){
             steps{
                  sh 'mvn clean package'
             }
