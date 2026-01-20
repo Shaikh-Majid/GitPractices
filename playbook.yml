@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+  - name: Display the message
+    debug:
+     msg: "the machine ip is : {{ansible_default-ipv4.addresses}}"
+
+
