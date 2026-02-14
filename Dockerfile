@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/GitPractices-1.0-SNAPSHOT.jar ./myapp.jar
 
 # Expose port (optional, if your app listens on 8080)
-EXPOSE 80
+EXPOSE 8080
 
 # Command to run the JAR
 ENTRYPOINT ["java", "-jar", "myapp.jar"]
