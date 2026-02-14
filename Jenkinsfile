@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'master' }
     //environment {
       //  AWS_ACCESS_KEY_ID     = credentials('aws-creds')  // Jenkins injects Access Key
        // AWS_SECRET_ACCESS_KEY = credentials('aws-creds')  // Jenkins injects Secret Key
@@ -11,29 +11,17 @@ pipeline {
         maven 'maven3'
     }
     stages {
-        stage('clone') {
+        stage('Git Checkout') {
             steps {
-              git branch: 'main',
-                url: 'https://github.com/Shaikh-Majid/GitPractices.git'
+              git url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
-        stage('build'){
+        stage('Maven Dependencies'){
             steps{
                  sh 'mvn clean package'
             }
         }
-       stage('Docker Build') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker') {
-                        def app = docker.build("shaikh888/devopsrepo:${BUILD_NUMBER}")
-                        app.push()
-                        sh "docker run -dt shaikh888/devopsrepo:${BUILD_NUMBER} sh -c 'while true; do sleep 60; done'"
-                    }
-                }
-            }
-       }
-
+       
     }
 }
     
