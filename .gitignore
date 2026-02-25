@@ -31,6 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-VAR.env
-.gitsecret/.env
+.gitsecret/
 .env
