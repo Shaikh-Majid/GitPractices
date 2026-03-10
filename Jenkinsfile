@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Ansible'){
             steps{
-              sh"ansible-playbook playbook.yml --dry-run"
+              sh"ansible-playbook playbook.yml"
             }
         }
        
