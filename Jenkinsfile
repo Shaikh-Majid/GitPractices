@@ -16,9 +16,9 @@ pipeline {
               git url: 'https://github.com/Shaikh-Majid/GitPractices.git'
             }
         }
-        stage('Maven Dependencies'){
+        stage('Ansible'){
             steps{
-                 sh 'mvn clean package'
+              sh"ansible-playbook playbook.yml --dry-run"
             }
         }
        
