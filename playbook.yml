@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: web
   tasks:
   - name: Display the message
     debug:
