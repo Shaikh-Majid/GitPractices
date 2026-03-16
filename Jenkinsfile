@@ -15,8 +15,8 @@ pipeline {
             steps {
               checkout([
        $class: 'GitScm', 
-       branches[[name:'master']],
-       userRemoteConfigs:[[credentialsId: 'github-key'
+       branches[[name: 'master']],
+       userRemoteConfigs:[[credentialsId: 'github-key',
                   name: 'origin',
                   url: 'https://github.com/Shaikh-Majid/GitPractices.git'
                ]] 
