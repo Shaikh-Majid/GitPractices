@@ -21,6 +21,8 @@ pipeline {
                   url: 'https://github.com/Shaikh-Majid/GitPractices.git'
                ]] 
              ])
+       echo "BRANCH_NAME: ${env.BRANCH_NAME}"
+       echo "GIT_BRANCH: ${env.GIT_BRANCH}"
             }
         }
         stage('Ansible'){
