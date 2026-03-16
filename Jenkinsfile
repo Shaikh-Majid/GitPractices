@@ -23,6 +23,10 @@ pipeline {
             }
         }
         stage('Ansible'){
+         when{ allOf{
+            branch 'main'
+          }
+           }
             steps{
               sh"ansible-playbook playbook.yml"
             }
