@@ -24,8 +24,9 @@ pipeline {
             }
         }
         stage('Ansible'){
-         when{ allOf{
+         when{ anyOf{
             branch 'main'
+            branch 'master'
           }
            }
             steps{
