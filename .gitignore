@@ -30,6 +30,5 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
-.gitsecret/
-.env
+VAR.env
+.gitsecret/.env
