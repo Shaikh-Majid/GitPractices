@@ -15,11 +15,11 @@ pipeline {
             steps {
               checkout([ 
        branches[[name:'main']]
-       userRemoteConfigs:[
-             [credentialsId: 'github-key'
+       userRemoteConfigs:[[credentialsId: 'github-key'
                 name: 'origin'
                   url: 'https://github.com/Shaikh-Majid/GitPractices.git'
-               ]] )
+               ]] 
+             ])
             }
         }
         stage('Ansible'){
