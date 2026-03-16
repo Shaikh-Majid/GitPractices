@@ -17,7 +17,7 @@ pipeline {
        $class: 'GitScm', 
        branches[[name:'master']],
        userRemoteConfigs:[[credentialsId: 'github-key'
-                  name: 'origin'
+                  name: 'origin',
                   url: 'https://github.com/Shaikh-Majid/GitPractices.git'
                ]] 
              ])
