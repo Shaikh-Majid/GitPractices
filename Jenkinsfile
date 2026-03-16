@@ -13,10 +13,11 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-              checkout scmGit([ 
-       branches[[name:'master']]
+              checkout([
+       $class: 'GitScm', 
+       branches[[name:'master']],
        userRemoteConfigs:[[credentialsId: 'github-key'
-                name: 'origin'
+                  name: 'origin'
                   url: 'https://github.com/Shaikh-Majid/GitPractices.git'
                ]] 
              ])
