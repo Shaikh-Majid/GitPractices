@@ -27,8 +27,9 @@ pipeline {
         }
         stage('Ansible'){
          when{ anyOf{
-            branch 'main'
-            branch 'master'
+             expression{ env.GIT_BRANCH == 'origin/main' }
+             expression{ env.GIT_BRANCH == 'origin/master' }
+
           }
            }
             steps{
