@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-              checkout([ 
+              checkout scmGit([ 
        branches[[name:'main']]
        userRemoteConfigs:[[credentialsId: 'github-key'
                 name: 'origin'
