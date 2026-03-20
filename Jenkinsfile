@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'devops_node' }
+    agent any
     //environment {
       //  AWS_ACCESS_KEY_ID     = credentials('aws-creds')  // Jenkins injects Access Key
        // AWS_SECRET_ACCESS_KEY = credentials('aws-creds')  // Jenkins injects Secret Key
@@ -15,7 +15,7 @@ pipeline {
             steps {
               checkout([
        $class: 'GitSCM', 
-       branches: [[name: 'master']],
+       branches: [[name: 'main']],
        userRemoteConfigs: [[credentialsId: 'github-key',
                   name: 'origin',
                   url: 'https://github.com/Shaikh-Majid/GitPractices.git'
@@ -25,7 +25,7 @@ pipeline {
        echo "GIT_BRANCH: ${env.GIT_BRANCH}"
             }
         }
-        stage('Ansible'){
+        stage('list the ip'){
          when{ anyOf{
              expression{ env.GIT_BRANCH == 'origin/main' }
              expression{ env.GIT_BRANCH == 'origin/master' }
@@ -33,7 +33,7 @@ pipeline {
           }
            }
             steps{
-              sh"ansible-playbook playbook.yml"
+              sh "ifconfig| grep inet"
             }
         }
        
