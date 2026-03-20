@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label devops_node }
     //environment {
       //  AWS_ACCESS_KEY_ID     = credentials('aws-creds')  // Jenkins injects Access Key
        // AWS_SECRET_ACCESS_KEY = credentials('aws-creds')  // Jenkins injects Secret Key
