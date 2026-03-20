@@ -26,6 +26,7 @@ pipeline {
             }
         }
         stage('list the ip'){
+         agent { label 'deploy-node' }
          when{ anyOf{
              expression{ env.GIT_BRANCH == 'origin/main' }
              expression{ env.GIT_BRANCH == 'origin/master' }
