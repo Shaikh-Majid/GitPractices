@@ -28,7 +28,7 @@ pipeline {
         stage('list the ip'){
          agent { label 'devops-node' }
             steps{
-              sh "ifconfig| grep inet"
+              sh """ifconfig| grep inet"""
             }
         }
        
