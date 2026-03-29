@@ -11,14 +11,11 @@
  * - Kubernetes deployment
  * - Ansible configuration management
  * - Security scanning & compliance
- * 
+ *
  * Author: Senior DevOps Engineer
  * Version: 2.0
  * Last Updated: 2026-02-28
  */
-
-@Library('shared-pipeline-library') _
-
 // ============================================================================
 // PIPELINE CONFIGURATION & ENVIRONMENT
 // ============================================================================
@@ -34,7 +31,7 @@ def K8S_NAMESPACE_PROD = 'production'
 
 pipeline {
     agent none
-    
+
     // =========================================================================
     // OPTIONS & TIMING
     // =========================================================================
@@ -45,7 +42,7 @@ pipeline {
         ansiColor('xterm')
         disableConcurrentBuilds()
     }
-    
+
     // =========================================================================
     // ENVIRONMENT VARIABLES
     // =========================================================================
@@ -53,23 +50,23 @@ pipeline {
         // Project Configuration
         PROJECT_NAME = 'enterprise-microservice'
         PROJECT_DESCRIPTION = 'Enterprise-grade Spring Boot Microservice with CI/CD'
-        
+
         // Git Configuration
         GIT_REPO = 'https://github.com/organization/enterprise-microservice.git'
         GIT_CREDENTIALS = 'github-enterprise-creds'
         GIT_BRANCH = "${env.BRANCH_NAME ?: 'main'}"
-        
+
         // Build Configuration
         GRADLE_USER_HOME = '${WORKSPACE}/.gradle'
         GRADLE_OPTS = '-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xmx1024m'
         JAVA_VERSION = 'openjdk-17'
-        
+
         // SonarQube Configuration
         SONARQUBE_SERVER = 'devopsb39-sonarqube'
         SONARQUBE_URL = 'http://sonarqube.company.internal:9000'
         SONARQUBE_TOKEN = credentials('sonarqube-token')
         SONAR_EXCLUSIONS = '**/test/**,**/generated/**,**/node_modules/**'
-        
+
         // Docker Configuration
         DOCKER_REGISTRY_URL = 'https://docker.io'
         DOCKER_REGISTRY_CREDENTIALS = 'docker-registry-creds'
@@ -78,7 +75,7 @@ pipeline {
         DOCKER_IMAGE_TAG = "${BUILD_TIMESTAMP}-${BUILD_NUMBER}"
         DOCKER_IMAGE_LATEST = "${BUILD_TIMESTAMP}-latest"
         CONTAINER_REGISTRY_ENDPOINT = 'registry.company.internal:5000'
-        
+
         // Kubernetes Configuration
         KUBECONFIG = '/home/jenkins/.kube/config'
         KUBECTL_VERSION = '1.28.0'
@@ -86,37 +83,37 @@ pipeline {
         K8S_CLUSTER_STAGING = 'staging-cluster.company.internal'
         K8S_CLUSTER_PROD = 'prod-cluster.company.internal'
         K8S_API_SERVER = 'https://k8s-api.company.internal'
-        
+
         // Ansible Configuration
         ANSIBLE_VAULT_ID = 'vault-jenkins'
         ANSIBLE_INVENTORY = 'inventory'
         ANSIBLE_CONFIG = 'ansible.cfg'
         ANSIBLE_PLAYBOOK_PATH = 'ansible/playbooks'
         ANSIBLE_LIMIT = 'all'
-        
+
         // Artifact Repository
         ARTIFACTORY_URL = 'https://artifactory.company.internal'
         ARTIFACTORY_CREDENTIALS = 'artifactory-creds'
         ARTIFACTORY_REPO = 'libs-release-local'
-        
+
         // Security & Compliance
         TRIVY_SEVERITY = 'HIGH,CRITICAL'
         SNYK_ORGANIZATION = 'company'
         DEPENDENCY_CHECK_SUPPRESSION = 'suppression.xml'
-        
+
         // Notification & Monitoring
         SLACK_CHANNEL = '#devops-pipelines'
         SLACK_WEBHOOK = credentials('slack-webhook-url')
         PAGERDUTY_INTEGRATION_KEY = credentials('pagerduty-key')
         GRAFANA_DASHBOARD_URL = 'https://grafana.company.internal'
-        
+
         // Deployment Configuration
         DEPLOYMENT_TIMEOUT = '10m'
         REPLICAS_DEV = '1'
         REPLICAS_STAGING = '2'
         REPLICAS_PROD = '3'
     }
-    
+
     // =========================================================================
     // PARAMETERS
     // =========================================================================
@@ -127,74 +124,74 @@ pipeline {
             defaultValue: 'main',
             description: 'Git branch to build from'
         )
-        
+
         // Gradle parameters
         booleanParam(
             name: 'RUN_UNIT_TESTS',
             defaultValue: true,
             description: 'Run unit tests'
         )
-        
+
         booleanParam(
             name: 'RUN_INTEGRATION_TESTS',
             defaultValue: true,
             description: 'Run integration tests'
         )
-        
+
         // Code Quality
         booleanParam(
             name: 'SKIP_SONARQUBE_SCAN',
             defaultValue: false,
             description: 'Skip SonarQube analysis'
         )
-        
+
         booleanParam(
             name: 'SKIP_SECURITY_SCAN',
             defaultValue: false,
             description: 'Skip security scanning (Trivy, Snyk, Dependency-Check)'
         )
-        
+
         // Docker parameters
         booleanParam(
             name: 'PUSH_DOCKER_IMAGE',
             defaultValue: true,
             description: 'Push Docker image to registry'
         )
-        
+
         choice(
             name: 'DEPLOYMENT_ENVIRONMENT',
             choices: ['NONE', 'DEV', 'STAGING', 'PRODUCTION'],
             description: 'Deployment environment after build'
         )
-        
+
         // Ansible parameters
         booleanParam(
             name: 'RUN_ANSIBLE_PLAYBOOKS',
             defaultValue: false,
             description: 'Execute Ansible playbooks for configuration management'
         )
-        
+
         string(
             name: 'ANSIBLE_PLAYBOOK',
             defaultValue: 'deploy.yml',
             description: 'Specific Ansible playbook to execute'
         )
     }
-    
+
     // =========================================================================
     // TRIGGERS
     // =========================================================================
     /*triggers {
         // GitSCM webhook trigger
         githubPush()
-        
+
         // Poll SCM every 15 minutes
         pollSCM('H/15 * * * *')
-        
+
         // Scheduled nightly builds
         cron('0 2 * * *')
     }*/
-    
+
     // =========================================================================
     // STAGES
     // =========================================================================
@@ -203,62 +200,62 @@ pipeline {
         // STAGE 1: INITIALIZATION & ENVIRONMENT SETUP
         // =====================================================================
         stage('01-Initialize') {
-            agent any  
+            agent any
             steps {
                 script {
                     echo """
                     ╔═════════════════════════════════════════════════════════════╗
                     ║         ENTERPRISE JENKINS PIPELINE - INITIALIZATION         ║
                     ╚═════════════════════════════════════════════════════════════╝
-                    
+
                     Project: ${PROJECT_NAME}
                     Build Number: ${BUILD_NUMBER}
                     Build Timestamp: ${BUILD_TIMESTAMP}
-                    Git Branch: ${GIT_BRANCH}
+                     Git Branch: ${GIT_BRANCH}
                     Docker Image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
                     Environment: ${params.DEPLOYMENT_ENVIRONMENT}
                     Build Workspace: ${WORKSPACE}
                     """
-                    
+
                     // Record build parameters
                     properties([
                         buildDiscarder(logRotator(numToKeepStr: '30')),
                         timestamps()
                     ])
                 }
-                
+
                 // Clean workspace
                 deleteDir()
-                
+
                 // Print environment
                 sh '''
                     echo "=== System Information ==="
                     uname -a
                     echo ""
-                    
+
                     echo "=== Java Version ==="
                     java -version || echo "Java not found"
                     echo ""
-                    
+
                     echo "=== Gradle Version ==="
                     gradle --version || echo "Gradle not available"
                     echo ""
-                    
+
                     echo "=== Docker Version ==="
                     docker --version || echo "Docker not available"
                     echo ""
-                    
+
                     echo "=== Git Version ==="
                     git --version
                     echo ""
-                    
+
                     echo "=== Kubernetes Version ==="
                     kubectl version --client 2>/dev/null || echo "Kubectl not available"
                     echo ""
-                    
+
                     echo "=== Ansible Version ==="
                     ansible --version 2>/dev/null || echo "Ansible not available"
-                '''
+                 '''
             }
             post {
                 always {
@@ -268,7 +265,7 @@ pipeline {
                 }
             }
         }
-        
+
         // =====================================================================
         // STAGE 2: SOURCE CODE CHECKOUT & VALIDATION
         // =====================================================================
@@ -278,7 +275,7 @@ pipeline {
                 script {
                     echo "⏳ Checking out source code from Git..."
                 }
-                
+
                 // Git checkout with credentials
                 checkout([
                     $class: 'GitSCM',
@@ -294,7 +291,7 @@ pipeline {
                         [$class: 'LocalBranch', localBranch: "${GIT_BRANCH}"]
                     ]
                 ])
-                
+
                 script {
                     // Capture Git metadata
                     sh '''
@@ -305,19 +302,19 @@ pipeline {
                         GIT_COMMIT_EMAIL=$(git log -1 --pretty=%ae)
                         GIT_BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
                         GIT_TAGS=$(git tag --contains HEAD)
-                        
+
                         echo "Commit ID: $GIT_COMMIT_ID"
                         echo "Commit Message: $GIT_COMMIT_MSG"
                         echo "Author: $GIT_COMMIT_AUTHOR <$GIT_COMMIT_EMAIL>"
                         echo "Branch: $GIT_BRANCH_NAME"
                         echo "Tags: ${GIT_TAGS:-none}"
-                        
+
                         # Save for later use
                         echo "$GIT_COMMIT_ID" > .git-commit-id
                         echo "$GIT_COMMIT_MSG" > .git-commit-msg
                         echo "$GIT_BRANCH_NAME" > .git-branch
                     '''
-                    
+
                     // Git statistics
                     sh '''
                         echo "=== Repository Statistics ==="
@@ -327,4 +324,8 @@ pipeline {
                         ls -la
                     '''
                 }
-          }
+            }
+        }
+    }
+}
+
