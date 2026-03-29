@@ -38,7 +38,7 @@ pipeline {
     // =========================================================================
     // ENVIRONMENT VARIABLES
     // =========================================================================
-    environment {
+  /*  environment {
         // Project Configuration
         PROJECT_NAME = 'enterprise-microservice'
         PROJECT_DESCRIPTION = 'Enterprise-grade Spring Boot Microservice with CI/CD'
@@ -96,15 +96,13 @@ pipeline {
         // Notification & Monitoring
         SLACK_CHANNEL = '#devops-pipelines'
         SLACK_WEBHOOK = credentials('slack-webhook-url')
-        PAGERDUTY_INTEGRATION_KEY = credentials('pagerduty-key')
-        GRAFANA_DASHBOARD_URL = 'https://grafana.company.internal'
-
-        // Deployment Configuration
+       // Deployment Configuration
         DEPLOYMENT_TIMEOUT = '10m'
         REPLICAS_DEV = '1'
         REPLICAS_STAGING = '2'
         REPLICAS_PROD = '3'
     }
+*/
 
     // =========================================================================
     // PARAMETERS
@@ -169,7 +167,6 @@ pipeline {
             description: 'Specific Ansible playbook to execute'
         )
     }
-
     // =========================================================================
     // TRIGGERS
     // =========================================================================
