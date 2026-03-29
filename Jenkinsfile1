@@ -57,9 +57,8 @@ pipeline {
         SONARQUBE_SERVER = 'devopsb39-sonarqube'
         SONARQUBE_URL = 'http://sonarqube.company.internal:9000'
         SONARQUBE_TOKEN = credentials('sonarqube-token')
-        SONAR_EXCLUSIONS = '**/test/**,**/generated/**,**/node_modules/**'
-
-        // Docker Configuration
+        //SONAR_EXCLUSIONS = '**/test/**,**/generated/**,**/node_modules/**'
+        Docker Configuration
         DOCKER_REGISTRY_URL = 'https://docker.io'
         DOCKER_REGISTRY_CREDENTIALS = 'docker-registry-creds'
         DOCKER_BUILDKIT = '1'
