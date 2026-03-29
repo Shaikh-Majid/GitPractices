@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopHub - Modern Ecommerce</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🛍️ ShopHub</h1>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="#products" class="nav-link">Products</a>
+                <a id="userMenu" class="nav-link" style="display:none;">My Account</a>
+                <a href="#" class="nav-link" id="loginBtn" onclick="goToLogin()">Login</a>
+                <a href="#" class="nav-link cart-link" id="cartBtn" style="display:none;">
+                    🛒 Cart <span id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="authPage" class="auth-page">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="showLoginTab()">Login</button>
+                <button class="tab-btn" onclick="showRegisterTab()">Register</button>
+            </div>
+
+            <div id="loginTab" class="auth-tab active">
+                <h2>Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <input type="text" placeholder="Username" id="loginUsername" required>
+                    <input type="password" placeholder="Password" id="loginPassword" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p id="loginError" class="error-msg"></p>
+            </div>
+
+            <div id="registerTab" class="auth-tab">
+                <h2>Create Account</h2>
+                <form onsubmit="handleRegister(event)">
+                    <input type="email" placeholder="Email" id="regEmail" required>
+                    <input type="text" placeholder="Username" id="regUsername" required>
+                    <input type="password" placeholder="Password" id="regPassword" required>
+                    <input type="text" placeholder="First Name" id="regFirstName" required>
+                    <input type="text" placeholder="Last Name" id="regLastName" required>
+                    <input type="text" placeholder="Address" id="regAddress" required>
+                    <input type="tel" placeholder="Phone (10 digits)" id="regPhone" required>
+                    <button type="submit">Register</button>
+                </form>
+                <p id="registerError" class="error-msg"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainApp" style="display:none;">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to ShopHub</h1>
+                <p>Discover amazing products at great prices</p>
+            </div>
+        </section>
+
+        <section id="products" class="products-section">
+            <div class="container">
+                <h2>Featured Products</h2>
+                <div class="filters">
+                    <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+                    <button class="filter-btn" onclick="filterProducts('Electronics')">Electronics</button>
+                    <button class="filter-btn" onclick="filterProducts('Clothing')">Clothing</button>
+                    <button class="filter-btn" onclick="filterProducts('Books')">Books</button>
+                </div>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="cartPage" style="display:none;">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            <div class="cart-container">
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items loaded here -->
+                </div>
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span>$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="checkout()">Proceed to Checkout</button>
+                    <button class="btn btn-secondary" onclick="backToProducts()">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 ShopHub. All rights reserved.</p>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

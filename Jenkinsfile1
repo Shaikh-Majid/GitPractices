@@ -184,7 +184,7 @@ pipeline {
     // =========================================================================
     // TRIGGERS
     // =========================================================================
-    triggers {
+    /*triggers {
         // GitSCM webhook trigger
         githubPush()
         
@@ -193,7 +193,7 @@ pipeline {
         
         // Scheduled nightly builds
         cron('0 2 * * *')
-    }
+    }*/
     
     // =========================================================================
     // STAGES
@@ -203,41 +203,7 @@ pipeline {
         // STAGE 1: INITIALIZATION & ENVIRONMENT SETUP
         // =====================================================================
         stage('01-Initialize') {
-            agent { 
-                kubernetes {
-                    yaml '''
-                        apiVersion: v1
-                        kind: Pod
-                        metadata:
-                          labels:
-                            job: jenkins-pipeline
-                        spec:
-                          serviceAccountName: jenkins
-                          containers:
-                          - name: docker
-                            image: docker:24.0-dind
-                            securityContext:
-                              privileged: true
-                            volumeMounts:
-                            - name: docker-sock
-                              mountPath: /var/run/docker.sock
-                          - name: kubectl
-                            image: bitnami/kubectl:1.28
-                            command:
-                            - cat
-                            tty: true
-                          - name: ansible
-                            image: ansible/ansible:2.10
-                            command:
-                            - cat
-                            tty: true
-                          volumes:
-                          - name: docker-sock
-                            hostPath:
-                              path: /var/run/docker.sock
-                    '''
-                }
-            }
+            agent any  
             steps {
                 script {
                     echo """
@@ -307,9 +273,7 @@ pipeline {
         // STAGE 2: SOURCE CODE CHECKOUT & VALIDATION
         // =====================================================================
         stage('02-SCM-Checkout') {
-            agent { 
-                label 'docker'
-            }
+            agent any
             steps {
                 script {
                     echo "⏳ Checking out source code from Git..."
@@ -363,14 +327,16 @@ pipeline {
                         ls -la
                     '''
                 }
-            }
+          }
             post {
                 failure {
-                    script {
-                        sendNotification("❌ SCM Checkout failed", "failure")
-                    }
+                slackSend(
+                channel: "${SLACK_CHANNEL}",
+                color: 'good',
+                message: "✅ SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} deployed to production.\nCommit: ${env.GIT_COMMIT}")
                 }
             }
+
         }
         
         // =====================================================================
