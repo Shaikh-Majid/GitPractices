@@ -32,6 +32,7 @@ build/
 ### VS Code ###
 VAR.env
 .gitsecret/.env
+.env
 
 # Ignore Gradle project-specific cache directory
 .gradle
